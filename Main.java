@@ -132,4 +132,52 @@ public class Main extends JPanel implements Runnable {
         g.setColor(Color.BLACK);
     }
 
+    void myPolygonDraw(Graphics g, NodeCoordinate[] input){
+
+        for (int i = 1; i < input.length; i++) {
+            bresenhamLine(g, input[i - 1].getX(), input[i - 1].getY(), input[i].getX(), input[i].getY());
+        }
+        bresenhamLine(g, input[input.length - 1].getX(), input[input.length - 1].getY(), input[0].getX(), input[0].getY());
+    }
+
+    void bresenhamLine(Graphics g, int x1, int y1, int x2, int y2){
+        float dx = Math.abs(x2 - x1);
+        float dy = Math.abs(y2 - y1);
+
+        float sx = (x1 < x2)? 1 : -1;
+        float sy = (y1 < y2)? 1 : -1;
+        boolean isSwap = false;
+
+        if (dy > dx) {
+            float tmp = dx;
+            dx = dy;
+            dy = tmp;
+            isSwap = true;
+        }
+
+        float D = 2 * dy / dx;
+
+        float x = x1;
+        float y = y1;
+        //float y = y1;
+
+        for (int i = 0; i < dx; i++) {
+            plot(g, x, y);
+            // if (i % 4 == 0) System.out.println(x + " " + y + " " + D);
+            if (D >= 0) {
+                if (isSwap) x += sx;
+                else y += sy;
+
+                D -= 2 * dx;
+            }
+
+            if (isSwap) y += sy;
+            else x += sx;
+
+            D += 2 * dy;
+
+        }
+
+    }
+
 }
