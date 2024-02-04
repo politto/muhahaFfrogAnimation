@@ -176,16 +176,18 @@ public class Main extends JPanel implements Runnable {
     }
 
     void paintTadpole(BufferedImage bf){
+        if (totalTime > 3000) return;
         double totalTimeCpy = totalTime > 3000? 3000 : totalTime;
         int opacity = (int) (totalTimeCpy > 2500? ((3000 - totalTimeCpy) / 3000) * 255 : 255);
-        System.out.println(opacity + " " + totalTime);
+        // System.out.println(opacity + " " + totalTime);
         if (opacity < 0) opacity = 0;
         Color tadColor = new Color(0, 40 + ((int)(totalTimeCpy) / 20) , 0, opacity);
         
         if (tadColor.getGreen() > 130) tadColor = new Color(0, 150, 0, opacity);
-        floodFill(bf, 320, 300, Color.white, tadColor);
-        vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 100), 220 - (int)(totalTime / 100), new Color(255, 223, 0));
-        floodFill(bf, 295 - (int)(totalTime / 100), 220 - (int)(totalTime / 100), new Color(255, 223, 0));
+        aggressiveFloodFill(bf, 320, 300, Color.black, tadColor);
+        vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 120), 200 - (int)(totalTime / 50), new Color(255, 223, 0));
+        aggressiveFloodFill(bf, 295 - (int)(totalTime / 100), 220 - (int)(totalTime / 100), Color.BLACK, new Color(0, 223, 0));
+        aggressiveFloodFill(bf, 295 - (int)(totalTime / 100), 220 - (int)(totalTime / 100), Color.BLACK, new Color(0, 223, 0));
         if (totalTime > 1000) {
             floodFill(bf, 205  - (int)(totalTime / 100), 280, Color.white, tadColor);
             floodFill(bf, 380  + (int)(totalTime / 100), 280, Color.white, tadColor);
@@ -463,19 +465,19 @@ public class Main extends JPanel implements Runnable {
 
         }
 
-        return m;
+        return m; 
     }
 
     public BufferedImage aggressiveFloodFill (BufferedImage m, int x, int y, Color stopFill, Color replacementColor){
         Queue<NodeCoordinate> q = new LinkedList<>();
         coloredPlot(m.getGraphics(), x, y, replacementColor);
         q.add(new NodeCoordinate(x, y));
-
         while (!q.isEmpty()) {
             NodeCoordinate cur = q.poll();
+            // System.out.println(q.size() + " " + (m.getRGB(cur.getX(), cur.getY() + 1) != stopFill.getRGB()));
             try {
                 //Sounth
-                if (m.getRGB(cur.getX(), cur.getY() + 1) != stopFill.getRGB()) {
+                if (m.getRGB(cur.getX(), cur.getY() + 1) != stopFill.getRGB() && m.getRGB(cur.getX(), cur.getY() + 1) != stopFill.getRGB() && m.getRGB(cur.getX(), cur.getY() + 1) != replacementColor.getRGB()) {
                     coloredPlot(m.getGraphics(), cur.getX(), cur.getY() + 1, replacementColor);
                     q.add(new NodeCoordinate(cur.getX(), cur.getY() + 1));
                 }
@@ -486,7 +488,7 @@ public class Main extends JPanel implements Runnable {
             }
             try {
                 //North
-                if (m.getRGB(cur.getX(), cur.getY() - 1) != stopFill.getRGB()) {
+                if (m.getRGB(cur.getX(), cur.getY() - 1) != stopFill.getRGB() && m.getRGB(cur.getX(), cur.getY() - 1) != stopFill.getRGB() && m.getRGB(cur.getX(), cur.getY() - 1) != replacementColor.getRGB()) {
                     coloredPlot(m.getGraphics(), cur.getX(), cur.getY() - 1, replacementColor);
                     q.add(new NodeCoordinate(cur.getX(), cur.getY() - 1));
                 }
@@ -497,7 +499,7 @@ public class Main extends JPanel implements Runnable {
             }
             try {
                 //West
-                if (m.getRGB(cur.getX() - 1, cur.getY()) != stopFill.getRGB()) {
+                if (m.getRGB(cur.getX() - 1, cur.getY()) != stopFill.getRGB() && m.getRGB(cur.getX() - 1, cur.getY()) != stopFill.getRGB() && m.getRGB(cur.getX() - 1, cur.getY()) != replacementColor.getRGB()) {
                     coloredPlot(m.getGraphics(), cur.getX() - 1, cur.getY(), replacementColor);
                     q.add(new NodeCoordinate(cur.getX() - 1, cur.getY()));
                 }
@@ -508,7 +510,7 @@ public class Main extends JPanel implements Runnable {
             }
             try {
                 //East
-                if (m.getRGB(cur.getX() + 1, cur.getY()) != stopFill.getRGB()) {
+                if (m.getRGB(cur.getX() + 1, cur.getY()) != stopFill.getRGB() && m.getRGB(cur.getX() + 1, cur.getY()) != stopFill.getRGB() && m.getRGB(cur.getX() + 1, cur.getY()) != replacementColor.getRGB()) {
                     coloredPlot(m.getGraphics(), cur.getX() + 1, cur.getY(), replacementColor);
                     q.add(new NodeCoordinate(cur.getX() + 1, cur.getY()));
                 }
