@@ -77,11 +77,13 @@ public class Main extends JPanel implements Runnable {
             int b = g2.getColor().getBlue();
             g2.setColor(new Color(r, g, b, fadedColorScale));
         }
+        paintBg(bf);
         drawTadpoleHead(g2);
         drawTadpoleTorso(g2);
         drawTadpoleRearLegs(g2);
         drawTadpoleFrontLegs(g2);
         paintTadpole(bf);
+        // 
 
     }
 
@@ -179,24 +181,60 @@ public class Main extends JPanel implements Runnable {
         if (totalTime > 3000) return;
         double totalTimeCpy = totalTime > 3000? 3000 : totalTime;
         int opacity = (int) (totalTimeCpy > 2500? ((3000 - totalTimeCpy) / 3000) * 255 : 255);
+        // int opacity = 255;
         // System.out.println(opacity + " " + totalTime);
         if (opacity < 0) opacity = 0;
         Color tadColor = new Color(0, 40 + ((int)(totalTimeCpy) / 20) , 0, opacity);
         
         if (tadColor.getGreen() > 130) tadColor = new Color(0, 150, 0, opacity);
         aggressiveFloodFill(bf, 320, 300, Color.black, tadColor);
-        vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 120), 200 - (int)(totalTime / 50), new Color(255, 223, 0));
+        // vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 130), 200 - (int)(totalTime / 50), new Color(255, 223, 0));
+
+        aggressiveFloodFill(bf, 220 - (int)(totalTime / 110), 330 + (int)(totalTime / 220), Color.black, new Color(255, 255, 5, opacity));
+        aggressiveFloodFill(bf, 350 + (int)(totalTime / 120), 324 + (int)(totalTime / 185), Color.black, new Color(255, 255, 5, opacity));
+
+        aggressiveFloodFill(bf, 220 - (int)(totalTime / 120), 340 + (int)(totalTime / 100), Color.black, new Color(5, 5, 5, opacity));
+        aggressiveFloodFill(bf, 350 + (int)(totalTime / 120), 335 + (int)(totalTime / 100), Color.black, new Color(5, 5, 5, opacity));
         aggressiveFloodFill(bf, 295 - (int)(totalTime / 100), 220 - (int)(totalTime / 100), Color.BLACK, new Color(0, 223, 0));
-        aggressiveFloodFill(bf, 295 - (int)(totalTime / 100), 220 - (int)(totalTime / 100), Color.BLACK, new Color(0, 223, 0));
+        aggressiveFloodFill(bf, 295 - (int)(totalTime / 130), 200 - (int)(totalTime / 50), Color.BLACK, new Color(180, 223, 226));
         if (totalTime > 1000) {
-            floodFill(bf, 205  - (int)(totalTime / 100), 280, Color.white, tadColor);
-            floodFill(bf, 380  + (int)(totalTime / 100), 280, Color.white, tadColor);
+            aggressiveFloodFill(bf, 205  - (int)(totalTime / 100), 280, Color.black, tadColor);
+            aggressiveFloodFill(bf, 380  + (int)(totalTime / 100), 280, Color.black, tadColor);
         }
         if (totalTime > 2000) {
-            floodFill(bf, 180 - (int)(totalTime / 100), 350, Color.white, tadColor);
-            floodFill(bf, 385 + (int)(totalTime / 100), 353, Color.white, tadColor);
+            aggressiveFloodFill(bf, 180 - (int)(totalTime / 100), 350, Color.black, tadColor);
+            aggressiveFloodFill(bf, 385 + (int)(totalTime / 100), 353, Color.black, tadColor);
         }
         plot(bf.getGraphics(), 385, 350);
+    }
+
+    void paintBg(BufferedImage bf) {
+        if (totalTime > 3000) return;
+        double totalTimeCpy = totalTime > 3000? 3000 : totalTime;
+        int opacity = (int) (totalTimeCpy > 2500? ((3000 - totalTimeCpy) / 3000) * 255 : 255);
+        // int opacity = 255;
+        // System.out.println(opacity + " " + totalTime);
+        if (opacity < 0) opacity = 0;
+        floodFill(bf, 0, 0, Color.white, new Color(200, 225, 216, opacity));
+        Graphics2D g = (Graphics2D) bf.getGraphics(); 
+        g.setColor(new Color(180, 185, 220));
+        waterDrop(g, 100, 100, 500);
+        waterDrop(g, 100, 100, 1500);
+        waterDrop(g, 400, 150, 675);
+        waterDrop(g, 400, 150, 1675);
+        waterDrop(g, 220, 550, 1100);
+        waterDrop(g, 220, 550, 2100);
+        waterDrop(g, 10, 200, 1500);
+        waterDrop(g, 10, 200, 2500);
+        waterDrop(g, 450, 480, 800);
+        waterDrop(g, 450, 480, 1800);
+
+    }
+
+    void waterDrop(Graphics2D g,int x, int y, int startTime){
+        if (totalTime < startTime || totalTime > startTime + 3000) return;
+        drawCircle(g, x, y,(int)((totalTime - startTime) / 10));
+        
     }
 
     void run1To3() {
