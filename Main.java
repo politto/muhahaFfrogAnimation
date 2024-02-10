@@ -7,7 +7,7 @@ import java.util.Queue;
 
 public class Main extends JPanel implements Runnable {
 
-    double totalTime;
+    private double totalTime;
     public static void main(String[] args) {
         Main m = new Main();
 
@@ -20,7 +20,25 @@ public class Main extends JPanel implements Runnable {
         f.setVisible(true);
         f.setLocationRelativeTo(null);
 
-        (new Thread(m)).start();
+        Thread[] threadss = new Thread[2];
+        for (int i = 0; i < threadss.length; i++) {
+            threadss[i] = new Thread(m);
+        }
+        if (m.getTotalTime() < 2500){
+            for (int i = 0; i < threadss.length; i++) {
+                threadss[i].start();
+            }
+        }
+        else{
+        }
+
+        // 
+        // for (int i = 0; i < threadss.length; i++) {
+        //     try{
+        //         threadss[i].join(3000);
+        //     }
+        //     catch(InterruptedException e) {}
+        // }
 
     }
 
@@ -43,7 +61,7 @@ public class Main extends JPanel implements Runnable {
 
     }
 
-    public void run () {
+    public synchronized void run () {
         double lastTime = System.currentTimeMillis();
         double currentTime;
         double elapsedTime;
@@ -52,11 +70,20 @@ public class Main extends JPanel implements Runnable {
         while (true) {
             currentTime = System.currentTimeMillis();
             elapsedTime = currentTime - lastTime;
-            totalTime += elapsedTime;
+            setTotalTime(getTotalTime() + elapsedTime);
+            System.out.println(totalTime);
             lastTime = currentTime;
             run1To3();
             repaint();
         }
+    }
+
+    public synchronized double getTotalTime() {
+        return totalTime;
+    }
+
+    public synchronized void setTotalTime(double value) {
+        totalTime = value;
     }
 
     void manifestTadpole(Graphics2D g2, BufferedImage bf) {
@@ -188,7 +215,7 @@ public class Main extends JPanel implements Runnable {
         
         if (tadColor.getGreen() > 130) tadColor = new Color(0, 150, 0, opacity);
         aggressiveFloodFill(bf, 320, 300, Color.black, tadColor);
-        // vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 130), 200 - (int)(totalTime / 50), new Color(255, 223, 0));
+        // vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 130), 200 - (int)(totalTime / 50), new Color(255, 223, 0));z
 
         aggressiveFloodFill(bf, 220 - (int)(totalTime / 110), 330 + (int)(totalTime / 220), Color.black, new Color(255, 255, 5, opacity));
         aggressiveFloodFill(bf, 350 + (int)(totalTime / 120), 324 + (int)(totalTime / 185), Color.black, new Color(255, 255, 5, opacity));
