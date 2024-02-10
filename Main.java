@@ -246,6 +246,7 @@ public class Main extends JPanel implements Runnable {
     }
 
     void drawMuhaha(Graphics2D g2){
+        if (totalTime < 4000) return;
         bezierCurve(g2, 359, 49, 378, 69, 432, 82, 470, 85);
         bezierCurve(g2, 470,85, 538,95, 563,132, 586,185);
         bezierCurve(g2, 586,185, 586,223, 578,246, 564,268);
@@ -340,6 +341,7 @@ public class Main extends JPanel implements Runnable {
 
     }
     void drawFrogF2(Graphics2D g2){
+        if (totalTime < 3000) return;
         bezierCurve(g2, 179, 136, 165,197, 199,248, 251,283);
         bezierCurve(g2, 251, 283, 319,280, 405,254, 430,209);
         //bezierCurve(g2, 430, 209, 345,90, 196,84, 204,84);
