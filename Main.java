@@ -233,6 +233,7 @@ public class Main extends JPanel implements Runnable {
             aggressiveFloodFill(bf, 385 + (int)(totalTime / 100), 353, Color.black, tadColor);
         }
         plot(bf.getGraphics(), 385, 350);
+        vectorTrack(bf.getGraphics(), 295 - (int)(totalTime / 130), 200 - (int)(totalTime / 50), new Color(255, 223, 0));
     }
 
     void paintBg(BufferedImage bf) {
