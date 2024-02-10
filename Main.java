@@ -30,7 +30,7 @@ public class Main extends JPanel implements Runnable {
         f.setVisible(true);
         f.setLocationRelativeTo(null);
 
-        Thread[] threadss = new Thread[2];
+        Thread[] threadss = new Thread[4];
         for (int i = 0; i < threadss.length; i++) {
             threadss[i] = new Thread(m);
         }
@@ -87,7 +87,7 @@ public class Main extends JPanel implements Runnable {
             elapsedTime = currentTime - lastTime;
             setTotalTime(getTotalTime() + elapsedTime);
             // System.out.println(totalTime);
-            totalTime = 4100;
+            // totalTime = 4100;
             lastTime = currentTime;
             // updateposX(elapsedTime);
             // updateposY(elapsedTime);
@@ -148,7 +148,7 @@ public class Main extends JPanel implements Runnable {
         
 
         // g2.rotate(squareRotate);
-        if (totalTime > 6000) paintFrogf2(bf);
+        if (totalTime < 6000) paintFrogf2(bf);
         
     }
 
@@ -369,7 +369,10 @@ public class Main extends JPanel implements Runnable {
 
     void paintFrogf2(BufferedImage bf){
         aggressiveFloodFill(bf, 300, 300, Color.black, new Color(150, 130, 40));
-        // vectorTrack(bf.getGraphics(), 120, 320, getBackground());
+        aggressiveFloodFill(bf, 80, 310, Color.black, new Color(150, 130, 40));
+        aggressiveFloodFill(bf, 520, 400, Color.black, new Color(150, 130, 40));
+        aggressiveFloodFill(bf, 300, 250, Color.black, new Color(255, 0, 0));
+        // vectorTrack(bf.getGraphics(), 310, 80, getBackground());
     }
 
     void paintBg(BufferedImage bf) {
@@ -381,34 +384,34 @@ public class Main extends JPanel implements Runnable {
         if (opacity < 0) opacity = 0;
         floodFill(bf, 0, 0, Color.white, new Color(200, 225, 216, opacity));
         Graphics2D g = (Graphics2D) bf.getGraphics(); 
-        g.setColor(new Color(180, 185, 220));
-        waterDrop(g, 100, 100, 500);
-        waterDrop(g, 100, 100, 1500);
-        waterDrop(g, 400, 150, 675);
-        waterDrop(g, 400, 150, 1675);
-        waterDrop(g, 220, 550, 1100);
-        waterDrop(g, 220, 550, 2100);
-        waterDrop(g, 10, 200, 1500);
-        waterDrop(g, 10, 200, 2500);
-        waterDrop(g, 450, 480, 800);
-        waterDrop(g, 450, 480, 1800);
+        // g.setColor(new Color(180, 185, 220));
+        // RectDrop(g, 100, 100, 500);
+        // RectDrop(g, 100, 100, 1500);
+        // RectDrop(g, 400, 150, 675);
+        // RectDrop(g, 400, 150, 1675);
+        // RectDrop(g, 220, 550, 1100);
+        // RectDrop(g, 220, 550, 2100);
+        // RectDrop(g, 10, 200, 1500);
+        // RectDrop(g, 10, 200, 2500);
+        // RectDrop(g, 450, 480, 800);
+        // RectDrop(g, 450, 480, 1800);
 
     }
 
     void paintBg2(BufferedImage bf) {
         floodFill(bf, 599, 599, Color.white, new Color(150, 225, 166));
         Graphics2D g = (Graphics2D) bf.getGraphics(); 
-        g.setColor(new Color(70, 185, 80));
-        waterDrop(g, 100, 100, 500);
-        waterDrop(g, 100, 100, 1500);
-        waterDrop(g, 400, 150, 675);
-        waterDrop(g, 400, 150, 1675);
-        waterDrop(g, 220, 550, 1100);
-        waterDrop(g, 220, 550, 2100);
-        waterDrop(g, 10, 200, 1500);
-        waterDrop(g, 10, 200, 2500);
-        waterDrop(g, 450, 480, 800);
-        waterDrop(g, 450, 480, 1800);
+        // g.setColor(new Color(70, 185, 80));
+        // RectDrop(g, 100, 100, 500);
+        // RectDrop(g, 100, 100, 1500);
+        // RectDrop(g, 400, 150, 675);
+        // RectDrop(g, 400, 150, 1675);
+        // RectDrop(g, 220, 550, 1100);
+        // RectDrop(g, 220, 550, 2100);
+        // RectDrop(g, 10, 200, 1500);
+        // RectDrop(g, 10, 200, 2500);
+        // RectDrop(g, 450, 480, 800);
+        // RectDrop(g, 450, 480, 1800);
     }
 
     public synchronized double getTotalTime() {
@@ -515,6 +518,20 @@ public class Main extends JPanel implements Runnable {
         if (totalTime < startTime || totalTime > startTime + 3000) return;
         drawCircle(g, x, y,(int)((totalTime - startTime) / 10));
         
+    }
+
+    void RectDrop(Graphics2D g,int x, int y, int startTime){
+        while (true)
+            if (totalTime % 3000 == 0)
+                drawRect(g, x, y, (int)(startTime + totalTime)); 
+    }
+    void drawRect(Graphics g,int x, int y,int startTime){
+        // กำหนดพิกัดของจุดสี่เหลี่ยม
+        int[] xPoints = {x, x+ + (int)((totalTime - startTime) / 10), x+ + (int)((totalTime - startTime) / 10), x, x};
+        int[] yPoints = {y, y, y+ + (int)((totalTime - startTime) / 10), y+ + (int)((totalTime - startTime) / 10), y};
+
+        // วาดเส้นตรง
+        g.drawPolyline(xPoints, yPoints, xPoints.length);
     }
 
     void run1To3() {
